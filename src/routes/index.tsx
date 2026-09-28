@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { products } from "@/data/products";
 import { ProductCard } from "@/components/site/ProductCard";
 import heroImg from "@/assets/hero.jpg";
+import heroVideo from "@/assets/hero.mp4";
 import chandanImg from "@/assets/products/shahi-chandan.jpg";
 import {
   Sparkles,
@@ -12,9 +13,57 @@ import {
   HeartHandshake,
   ChevronDown,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const Route = createFileRoute("/")({ component: Home });
+
+// Hero video speed: 1 is normal, 0.5 is half speed, 2 is double.
+const HERO_VIDEO_SPEED = 0.65;
+
+// The image is always rendered as the base layer, so it doubles as the fallback: the video only
+// fades in once it is actually playing (not on error, blocked autoplay or reduced motion).
+function HeroMedia() {
+  const [playing, setPlaying] = useState(false);
+  const [reduceMotion, setReduceMotion] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    setReduceMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }, []);
+  // The video mounts after hydration, so don't rely on the autoplay attribute alone.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.defaultPlaybackRate = HERO_VIDEO_SPEED;
+    video.playbackRate = HERO_VIDEO_SPEED;
+    video.play().catch(() => {});
+  }, [reduceMotion]);
+
+  return (
+    <>
+      <img
+        src={heroImg}
+        alt="Incense sticks burning beside a brass diya and marigolds"
+        className="h-full w-full object-cover"
+      />
+      {!reduceMotion && (
+        <video
+          ref={videoRef}
+          src={heroVideo}
+          poster={heroImg}
+          preload="auto"
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-hidden="true"
+          onPlaying={() => setPlaying(true)}
+          onError={() => setPlaying(false)}
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${playing ? "opacity-100" : "opacity-0"}`}
+        />
+      )}
+    </>
+  );
+}
 
 const moods = [
   "Morning Prayers",
@@ -54,11 +103,7 @@ function Home() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img
-            src={heroImg}
-            alt="Incense sticks burning beside a brass diya and marigolds"
-            className="h-full w-full object-cover"
-          />
+          <HeroMedia />
           <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/80 to-background/40" />
         </div>
         <div className="container-x relative grid min-h-[520px] items-center gap-8 py-16 sm:py-20 md:grid-cols-2 md:py-28 lg:py-32">
