@@ -33,7 +33,10 @@ const faqs = [
     "Are bulk orders available?",
     "Absolutely. Reach out via the contact form for festival gifting and bulk pricing.",
   ],
-  ["Are secure payments available?", "Yes, we offer COD, UPI and secure online payments."],
+  [
+    "How do I pay?",
+    "Place your order on the site and it opens in WhatsApp with your order details. We confirm it there and share the payment details with you.",
+  ],
   [
     "How should dhoop batti be stored?",
     "Keep in a cool, dry place away from direct sunlight to preserve fragrance.",

@@ -161,7 +161,7 @@ function ProductPage() {
               <Truck className="h-4 w-4 shrink-0 text-secondary" /> 7-day dispatch
             </div>
             <div className="flex items-center gap-2">
-              <Shield className="h-4 w-4 shrink-0 text-secondary" /> Secure payments
+              <Shield className="h-4 w-4 shrink-0 text-secondary" /> Pay on WhatsApp
             </div>
             <div className="flex items-center gap-2">
               <Leaf className="h-4 w-4 shrink-0 text-secondary" /> Charcoal free

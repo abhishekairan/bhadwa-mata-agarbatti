@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as ScentFinderRouteImport } from './routes/scent-finder'
-import { Route as OrderSuccessRouteImport } from './routes/order-success'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CheckoutRouteImport } from './routes/checkout'
@@ -29,11 +28,6 @@ const ShopRoute = ShopRouteImport.update({
 const ScentFinderRoute = ScentFinderRouteImport.update({
   id: '/scent-finder',
   path: '/scent-finder',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OrderSuccessRoute = OrderSuccessRouteImport.update({
-  id: '/order-success',
-  path: '/order-success',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -84,7 +78,6 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
-  '/order-success': typeof OrderSuccessRoute
   '/scent-finder': typeof ScentFinderRoute
   '/shop': typeof ShopRoute
   '/category/$slug': typeof CategorySlugRoute
@@ -97,7 +90,6 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
-  '/order-success': typeof OrderSuccessRoute
   '/scent-finder': typeof ScentFinderRoute
   '/shop': typeof ShopRoute
   '/category/$slug': typeof CategorySlugRoute
@@ -111,7 +103,6 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
-  '/order-success': typeof OrderSuccessRoute
   '/scent-finder': typeof ScentFinderRoute
   '/shop': typeof ShopRoute
   '/category/$slug': typeof CategorySlugRoute
@@ -126,7 +117,6 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contact'
     | '/faq'
-    | '/order-success'
     | '/scent-finder'
     | '/shop'
     | '/category/$slug'
@@ -139,7 +129,6 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contact'
     | '/faq'
-    | '/order-success'
     | '/scent-finder'
     | '/shop'
     | '/category/$slug'
@@ -152,7 +141,6 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contact'
     | '/faq'
-    | '/order-success'
     | '/scent-finder'
     | '/shop'
     | '/category/$slug'
@@ -166,7 +154,6 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
-  OrderSuccessRoute: typeof OrderSuccessRoute
   ScentFinderRoute: typeof ScentFinderRoute
   ShopRoute: typeof ShopRoute
   CategorySlugRoute: typeof CategorySlugRoute
@@ -187,13 +174,6 @@ declare module '@tanstack/react-router' {
       path: '/scent-finder'
       fullPath: '/scent-finder'
       preLoaderRoute: typeof ScentFinderRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/order-success': {
-      id: '/order-success'
-      path: '/order-success'
-      fullPath: '/order-success'
-      preLoaderRoute: typeof OrderSuccessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -262,7 +242,6 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
-  OrderSuccessRoute: OrderSuccessRoute,
   ScentFinderRoute: ScentFinderRoute,
   ShopRoute: ShopRoute,
   CategorySlugRoute: CategorySlugRoute,

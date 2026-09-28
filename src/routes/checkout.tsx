@@ -1,6 +1,7 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { Breadcrumb } from "@/components/site/Breadcrumb";
-import { useCart } from "@/lib/cart";
+import { useCart, type CartItem } from "@/lib/cart";
+import { BRAND_NAME, WHATSAPP_URL } from "@/lib/brand";
 
 const rupees = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" });
 
@@ -9,14 +10,50 @@ export const Route = createFileRoute("/checkout")({
   component: CheckoutPage,
 });
 
+function buildOrderMessage(items: CartItem[], subtotal: number, form: FormData) {
+  const field = (key: string) => String(form.get(key) ?? "").trim();
+  const orderId = "BM" + Math.floor(100000 + Math.random() * 900000);
+  const address = [
+    field("addr1"),
+    field("addr2"),
+    [field("city"), field("state")].filter(Boolean).join(", "),
+    field("pin"),
+  ]
+    .filter(Boolean)
+    .join(", ");
+
+  const lines = [
+    `*New order — ${BRAND_NAME}*`,
+    `Order ID: ${orderId}`,
+    "",
+    "*Items*",
+    ...items.map(
+      (it, i) =>
+        `${i + 1}. ${it.product.name} (${it.pack}) × ${it.qty} — ${rupees.format(it.qty * it.product.price)}`,
+    ),
+    "",
+    `*Total: ${rupees.format(subtotal)}*`,
+    "",
+    "*Customer*",
+    `Name: ${field("name")}`,
+    `Phone: ${field("phone")}`,
+    `Email: ${field("email")}`,
+    "",
+    "*Delivery address*",
+    address,
+  ];
+  if (field("notes")) lines.push("", `*Notes:* ${field("notes")}`);
+  lines.push("", "Please confirm this order and share the payment details.");
+  return lines.join("\n");
+}
+
 function CheckoutPage() {
-  const { items, subtotal, clear } = useCart();
-  const nav = useNavigate();
-  const submit = (e: React.FormEvent) => {
+  const { items, subtotal } = useCart();
+  const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const orderId = "BM" +Math.floor(100000 + Math.random() * 900000);
-    clear();
-    nav({ to: "/order-success", search: { id: orderId } });
+    if (items.length === 0) return;
+    const message = buildOrderMessage(items, subtotal, new FormData(e.currentTarget));
+    window.location.href = `${WHATSAPP_URL}?text=${encodeURIComponent(message)}`;
   };
   return (
     <section className="container-x py-10 md:py-14">
@@ -43,22 +80,6 @@ function CheckoutPage() {
               <Input name="pin" label="PIN Code" required />
             </div>
             <Input name="notes" label="Order Notes" />
-          </Section>
-          <Section title="Payment Method">
-            {["Cash on Delivery", "UPI", "Online Payment"].map((m, i) => (
-              <label
-                key={m}
-                className="flex items-center gap-3 rounded-xl border p-4 cursor-pointer"
-              >
-                <input
-                  type="radio"
-                  name="pay"
-                  defaultChecked={i === 0}
-                  className="accent-secondary"
-                />
-                <span>{m}</span>
-              </label>
-            ))}
           </Section>
         </div>
         <aside className="h-fit space-y-4 rounded-2xl border bg-card p-5 sm:p-6">
@@ -92,7 +113,7 @@ function CheckoutPage() {
           </div>
           <div className="flex justify-between text-sm text-muted-foreground">
             <span>Shipping</span>
-            <span>Free</span>
+            <span>Confirmed on WhatsApp</span>
           </div>
           <div className="flex justify-between font-semibold">
             <span>Total</span>
@@ -102,8 +123,12 @@ function CheckoutPage() {
             disabled={items.length === 0}
             className="w-full btn-saffron rounded-full px-6 py-3.5 font-medium disabled:opacity-50"
           >
-            Place Order
+            Order on WhatsApp
           </button>
+          <p className="text-center text-xs text-muted-foreground">
+            You will be taken to WhatsApp with your order details ready to send. Payment is
+            arranged with us there.
+          </p>
         </aside>
       </form>
     </section>

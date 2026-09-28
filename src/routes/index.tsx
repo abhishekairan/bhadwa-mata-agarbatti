@@ -28,7 +28,7 @@ const why = [
   { i: Leaf, t: "Charcoal Free" },
   { i: Sparkles, t: "Five Shahi Fragrances" },
   { i: HeartHandshake, t: "Registered Brand" },
-  { i: ShieldCheck, t: "Secure Payments" },
+  { i: ShieldCheck, t: "Easy WhatsApp Ordering" },
   { i: Truck, t: "Fast Shipping" },
   { i: Flame, t: "Ideal for Daily Puja" },
 ];
