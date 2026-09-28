@@ -10,8 +10,16 @@ export default defineConfig(({ command, mode }) => {
   // PORT comes from the shell or a .env file; unset falls back to Vite's default (5173).
   const port = Number(loadEnv(mode, process.cwd(), "").PORT) || undefined;
   return {
-    server: { port },
-    preview: { port },
+    server: {
+      host: true, 
+      port,
+      allowedHosts: ["*"]
+    },
+    preview: { 
+      host: true, 
+      port,
+      allowedHosts: ["*"]
+    },
     plugins: [
       tailwindcss(),
       tsConfigPaths({ projects: ["./tsconfig.json"] }),

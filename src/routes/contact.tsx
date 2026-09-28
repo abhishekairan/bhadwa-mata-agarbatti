@@ -3,9 +3,16 @@ import { useState } from "react";
 import { PageHeader } from "@/components/site/PageHeader";
 import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import { ADDRESS, EMAIL, PHONE_DISPLAY, WHATSAPP_URL } from "@/lib/brand";
+import { pageHead, pageTitle } from "@/lib/seo";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({ meta: [{ title: "Contact — Bhadwamata Agarbatti" }] }),
+  head: () =>
+    pageHead({
+      title: pageTitle("Contact"),
+      description:
+        "Contact Bhadwamata Agarbatti in Neemuch, Madhya Pradesh by phone, WhatsApp or email for orders, queries and bulk gifting.",
+      path: "/contact",
+    }),
   component: ContactPage,
 });
 

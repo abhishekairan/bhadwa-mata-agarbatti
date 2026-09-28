@@ -1,7 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram, Mail, MapPin, Phone } from "lucide-react";
 import logoImg from "@/assets/logo.jpg";
-import { ADDRESS, EMAIL, INSTAGRAM_URL, PHONE_DISPLAY } from "@/lib/brand";
+import {
+  ADDRESS,
+  DEVELOPER_NAME,
+  DEVELOPER_URL,
+  EMAIL,
+  INSTAGRAM_URL,
+  PHONE_DISPLAY,
+} from "@/lib/brand";
 
 export function Footer() {
   return (
@@ -97,7 +104,18 @@ export function Footer() {
       <div className="border-t border-white/10">
         <div className="container-x flex flex-col gap-2 py-5 text-center text-xs text-primary-foreground/70 md:flex-row md:justify-between md:text-left">
           <span>© {new Date().getFullYear()} Bhadwamata Agarbatti. All rights reserved.</span>
-          <span>Crafted with devotion in India.</span>
+          <span>
+            Crafted with devotion in India · Developed by{" "}
+            <a
+              href={DEVELOPER_URL}
+              target="_blank"
+              rel="noopener"
+              title={DEVELOPER_NAME}
+              className="underline underline-offset-2 hover:text-primary-foreground"
+            >
+              branchcanopy.com
+            </a>
+          </span>
         </div>
       </div>
     </footer>

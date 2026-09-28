@@ -14,8 +14,19 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { pageHead } from "@/lib/seo";
 
-export const Route = createFileRoute("/")({ component: Home });
+export const Route = createFileRoute("/")({
+  head: () =>
+    pageHead({
+      title: "Bhadwamata Agarbatti — Bombless, Charcoal-Free Dhoop Batti",
+      description:
+        "Shahi dhoop batti in Chandan, Gugal, Gulab, Kewda and Mogra. Bombless, charcoal-free sticks from Bhadwamata Agarbatti, Neemuch.",
+      path: "/",
+      image: heroImg,
+    }),
+  component: Home,
+});
 
 // Hero video speed: 1 is normal, 0.5 is half speed, 2 is double.
 const HERO_VIDEO_SPEED = 0.65;

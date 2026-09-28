@@ -2,11 +2,18 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { Breadcrumb } from "@/components/site/Breadcrumb";
 import { useCart } from "@/lib/cart";
+import { pageHead, pageTitle } from "@/lib/seo";
 
 const rupees = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" });
 
 export const Route = createFileRoute("/cart")({
-  head: () => ({ meta: [{ title: "Your Cart — Bhadwamata Agarbatti" }] }),
+  head: () =>
+    pageHead({
+      title: pageTitle("Your Cart"),
+      description: "Review the dhoop batti in your Bhadwamata Agarbatti cart.",
+      path: "/cart",
+      noindex: true,
+    }),
   component: CartPage,
 });
 

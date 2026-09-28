@@ -10,7 +10,46 @@ import {
 
 import appCss from "../styles.css?url";
 import { Layout } from "@/components/site/Layout";
-import logoImg from "@/assets/logo.jpg";
+import heroImg from "@/assets/hero.jpg";
+import {
+  ADDRESS_LOCALITY,
+  ADDRESS_REGION,
+  BRAND_NAME,
+  DEVELOPER_NAME,
+  DEVELOPER_URL,
+  EMAIL,
+  INSTAGRAM_URL,
+  PHONE_E164,
+} from "@/lib/brand";
+import { SITE_URL, absoluteUrl } from "@/lib/seo";
+
+const SITE_DESCRIPTION =
+  "Bhadwamata Agarbatti: bombless, charcoal-free dhoop batti in Shahi Chandan, Gugal, Gulab, Kewda and Mogra for daily worship and peaceful living. Made in Neemuch, Madhya Pradesh.";
+
+const organizationLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: BRAND_NAME,
+  url: SITE_URL || undefined,
+  logo: absoluteUrl("/icon-512.png"),
+  email: EMAIL,
+  telephone: PHONE_E164,
+  sameAs: [INSTAGRAM_URL],
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: ADDRESS_LOCALITY,
+    addressRegion: ADDRESS_REGION,
+    addressCountry: "IN",
+  },
+};
+
+const websiteLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: BRAND_NAME,
+  url: SITE_URL || undefined,
+  inLanguage: "en-IN",
+};
 
 function NotFoundComponent() {
   return (
@@ -75,20 +114,32 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Bhadwamata Agarbatti — Bombless, Charcoal-Free Dhoop Batti" },
+      { name: "description", content: SITE_DESCRIPTION },
       {
-        name: "description",
+        name: "keywords",
         content:
-          "Bhadwamata Agarbatti: bombless, charcoal-free dhoop batti in Shahi Chandan, Gugal, Gulab, Kewda and Mogra for daily worship and peaceful living.",
+          "dhoop batti, agarbatti, bombless dhoop, charcoal free dhoop, shahi chandan, shahi gugal, shahi gulab, shahi kewda, shahi mogra, Bhadwamata, Neemuch",
       },
-      { name: "author", content: "Bhadwamata Agarbatti" },
-      { property: "og:site_name", content: "Bhadwamata Agarbatti" },
-      { property: "og:title", content: "Bhadwamata Agarbatti" },
-      {
-        property: "og:description",
-        content: "Bombless, charcoal-free dhoop batti in five classic Shahi fragrances.",
-      },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { name: "theme-color", content: "#fbf5e8" },
+      { name: "author", content: BRAND_NAME },
+      { name: "developer", content: `${DEVELOPER_NAME} (${DEVELOPER_URL})` },
+      { name: "geo.region", content: "IN-MP" },
+      { name: "geo.placename", content: ADDRESS_LOCALITY },
+      { property: "og:site_name", content: BRAND_NAME },
+      { property: "og:locale", content: "en_IN" },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { property: "og:title", content: "Bhadwamata Agarbatti — Bombless, Charcoal-Free Dhoop Batti" },
+      { property: "og:description", content: SITE_DESCRIPTION },
+      { name: "twitter:card", content: absoluteUrl(heroImg) ? "summary_large_image" : "summary" },
+      ...(absoluteUrl(heroImg)
+        ? [
+            { property: "og:image", content: absoluteUrl(heroImg)! },
+            { name: "twitter:image", content: absoluteUrl(heroImg)! },
+          ]
+        : []),
+      { "script:ld+json": organizationLd },
+      { "script:ld+json": websiteLd },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -101,8 +152,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", type: "image/jpeg", href: logoImg },
-      { rel: "apple-touch-icon", href: logoImg },
+      { rel: "icon", href: "/favicon.ico", sizes: "48x48" },
+      { rel: "icon", type: "image/png", href: "/favicon-32.png", sizes: "32x32" },
+      { rel: "icon", type: "image/png", href: "/icon-192.png", sizes: "192x192" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
+      { rel: "manifest", href: "/site.webmanifest" },
     ],
   }),
   shellComponent: RootShell,
@@ -113,7 +167,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en-IN">
       <head>
         <HeadContent />
       </head>

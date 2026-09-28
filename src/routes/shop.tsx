@@ -2,15 +2,17 @@ import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { PageHeader } from "@/components/site/PageHeader";
 import { ShopGrid } from "@/components/site/Shop";
+import { pageHead, pageTitle } from "@/lib/seo";
 
 export const Route = createFileRoute("/shop")({
   validateSearch: z.object({ q: z.string().optional() }),
-  head: () => ({
-    meta: [
-      { title: "Shop — Bhadwamata Agarbatti" },
-      { name: "description", content: "Browse all Bhadwamata Shahi dhoop batti fragrances." },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: pageTitle("Shop"),
+      description:
+        "Shop Bhadwamata Shahi dhoop batti: Chandan, Gugal, Gulab, Kewda and Mogra. Bombless, charcoal-free sticks. Order on WhatsApp.",
+      path: "/shop",
+    }),
   component: ShopPage,
 });
 

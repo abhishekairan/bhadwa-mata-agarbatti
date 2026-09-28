@@ -3,17 +3,17 @@ import { Breadcrumb } from "@/components/site/Breadcrumb";
 import heroImg from "@/assets/hero.jpg";
 import chandanImg from "@/assets/products/shahi-chandan.jpg";
 import { Leaf, Sparkles, ShieldCheck } from "lucide-react";
+import { pageHead, pageTitle } from "@/lib/seo";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "About — Bhadwamata Agarbatti" },
-      {
-        name: "description",
-        content: "Bhadwamata Agarbatti: the Indian tradition of fragrance, prayer and purity.",
-      },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: pageTitle("About"),
+      description:
+        "About Bhadwamata Agarbatti of Neemuch, Madhya Pradesh: the Indian tradition of fragrance, prayer and purity in five Shahi dhoop batti fragrances.",
+      path: "/about",
+      image: chandanImg,
+    }),
   component: AboutPage,
 });
 

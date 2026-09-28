@@ -3,9 +3,16 @@ import { useState } from "react";
 import { PageHeader } from "@/components/site/PageHeader";
 import { products } from "@/data/products";
 import { ProductCard } from "@/components/site/ProductCard";
+import { pageHead, pageTitle } from "@/lib/seo";
 
 export const Route = createFileRoute("/scent-finder")({
-  head: () => ({ meta: [{ title: "Scent Finder — Bhadwamata Agarbatti" }] }),
+  head: () =>
+    pageHead({
+      title: pageTitle("Scent Finder"),
+      description:
+        "Answer three quick questions to find your ideal Bhadwamata dhoop batti: Chandan, Gugal, Gulab, Kewda or Mogra.",
+      path: "/scent-finder",
+    }),
   component: Quiz,
 });
 

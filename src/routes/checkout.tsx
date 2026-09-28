@@ -2,11 +2,18 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Breadcrumb } from "@/components/site/Breadcrumb";
 import { useCart, type CartItem } from "@/lib/cart";
 import { BRAND_NAME, WHATSAPP_URL } from "@/lib/brand";
+import { pageHead, pageTitle } from "@/lib/seo";
 
 const rupees = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" });
 
 export const Route = createFileRoute("/checkout")({
-  head: () => ({ meta: [{ title: "Checkout — Bhadwamata Agarbatti" }] }),
+  head: () =>
+    pageHead({
+      title: pageTitle("Checkout"),
+      description: "Send your Bhadwamata Agarbatti order on WhatsApp.",
+      path: "/checkout",
+      noindex: true,
+    }),
   component: CheckoutPage,
 });
 

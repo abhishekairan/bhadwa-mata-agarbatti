@@ -1,6 +1,7 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { PageHeader } from "@/components/site/PageHeader";
 import { ShopGrid } from "@/components/site/Shop";
+import { pageHead, pageTitle } from "@/lib/seo";
 
 const map: Record<string, { name: "Dhoop"; copy: string }> = {
   dhoop: {
@@ -15,14 +16,13 @@ export const Route = createFileRoute("/category/$slug")({
   },
   head: ({ params }) => {
     const c = map[params.slug];
-    return {
-      meta: c
-        ? [
-            { title: `${c.name} — Bhadwamata Agarbatti` },
-            { name: "description", content: c.copy },
-          ]
-        : [],
-    };
+    return c
+      ? pageHead({
+          title: pageTitle(`${c.name} Batti`),
+          description: c.copy,
+          path: `/category/${params.slug}`,
+        })
+      : {};
   },
   component: CategoryPage,
   notFoundComponent: () => <div className="container-x py-20 text-center">Category not found</div>,

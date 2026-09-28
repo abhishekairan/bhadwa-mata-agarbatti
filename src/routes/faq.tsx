@@ -2,9 +2,16 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { PageHeader } from "@/components/site/PageHeader";
+import { pageHead, pageTitle } from "@/lib/seo";
 
 export const Route = createFileRoute("/faq")({
-  head: () => ({ meta: [{ title: "FAQ — Bhadwamata Agarbatti" }] }),
+  head: () =>
+    pageHead({
+      title: pageTitle("FAQ"),
+      description:
+        "Answers about Bhadwamata dhoop batti: fragrances, delivery, ordering on WhatsApp, bulk orders and storage.",
+      path: "/faq",
+    }),
   component: FaqPage,
 });
 

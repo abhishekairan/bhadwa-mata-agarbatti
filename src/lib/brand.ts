@@ -1,6 +1,11 @@
 export const BRAND_NAME = "Bhadwamata Agarbatti";
+export const DEVELOPER_NAME = "Branch Canopy";
+export const DEVELOPER_URL = "https://branchcanopy.com";
 export const INSTAGRAM_URL = "https://www.instagram.com/bhadwamataagarbatti";
 export const PHONE_DISPLAY = "+91 62642 05589";
+export const PHONE_E164 = "+916264205589";
 export const WHATSAPP_URL = "https://wa.me/916264205589";
 export const EMAIL = "bhadwamataagarbatti@gmail.com";
-export const ADDRESS = "Neemuch, Madhya Pradesh, India";
+export const ADDRESS_LOCALITY = "Neemuch";
+export const ADDRESS_REGION = "Madhya Pradesh";
+export const ADDRESS = `${ADDRESS_LOCALITY}, ${ADDRESS_REGION}, India`;

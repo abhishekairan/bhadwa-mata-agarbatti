@@ -5,6 +5,7 @@ import { Breadcrumb } from "@/components/site/Breadcrumb";
 import { ProductCard } from "@/components/site/ProductCard";
 import { getBySlug, products } from "@/data/products";
 import { useCart } from "@/lib/cart";
+import { pageHead, pageTitle } from "@/lib/seo";
 
 const rupees = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" });
 
@@ -15,15 +16,12 @@ export const Route = createFileRoute("/product/$slug")({
   head: ({ params }) => {
     const p = getBySlug(params.slug);
     return p
-      ? {
-          meta: [
-            { title: `${p.name} — Bhadwamata Agarbatti` },
-            { name: "description", content: p.description },
-            { property: "og:title", content: p.name },
-            { property: "og:description", content: p.description },
-            { property: "og:image", content: p.image },
-          ],
-        }
+      ? pageHead({
+          title: pageTitle(`${p.name} Dhoop Batti`),
+          description: p.description,
+          path: `/product/${p.slug}`,
+          image: p.image,
+        })
       : {};
   },
   component: ProductPage,
