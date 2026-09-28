@@ -1,0 +1,105 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
+import { PageHeader } from "@/components/site/PageHeader";
+import { products } from "@/data/products";
+import { ProductCard } from "@/components/site/ProductCard";
+
+export const Route = createFileRoute("/scent-finder")({
+  head: () => ({ meta: [{ title: "Scent Finder — Bhadwamata Agarbatti" }] }),
+  component: Quiz,
+});
+
+const qs = [
+  {
+    q: "When do you usually use incense?",
+    opts: ["Morning Puja", "Meditation", "Evening Relaxation", "Festivals"],
+  },
+  {
+    q: "Which fragrance family do you prefer?",
+    opts: ["Floral", "Woody", "Sweet", "Traditional Dhoop"],
+  },
+  {
+    q: "What mood do you want to create?",
+    opts: ["Peaceful", "Devotional", "Energizing", "Festive"],
+  },
+];
+
+function recommend(ans: string[]) {
+  const rules: Record<string, (product: (typeof products)[number]) => boolean | undefined> = {
+    Floral: (p) => /rose|gulab|mogra|jasmine|kewda|floral/i.test(`${p.fragrance} ${p.description}`),
+    Woody: (p) => /chandan|sandal|gugal|wood/i.test(`${p.fragrance} ${p.description}`),
+    Sweet: (p) => /rose|gulab|mogra|jasmine/i.test(`${p.fragrance} ${p.description}`),
+    "Traditional Dhoop": (p) => p.categories?.includes("Dhoop") || p.category === "Dhoop",
+    Festivals: (p) => p.mood?.includes("Festive Pooja"),
+    "Morning Puja": (p) => p.bestFor.includes("Daily Puja") || p.mood?.includes("Morning Prayers"),
+    Meditation: (p) =>
+      p.bestFor.includes("Meditation") || /chandan|sandal|gugal/i.test(p.fragrance),
+    Festive: (p) => p.mood?.includes("Festive Pooja"),
+  };
+  const recs = products.filter((p) => ans.some((a) => rules[a]?.(p))).slice(0, 4);
+  return recs.length ? recs : products.slice(0, 4);
+}
+
+function Quiz() {
+  const [step, setStep] = useState(0);
+  const [ans, setAns] = useState<string[]>([]);
+  const done = step >= qs.length;
+  const recs = done ? recommend(ans) : [];
+  return (
+    <>
+      <PageHeader
+        title="Find Your Scent"
+        subtitle="Answer 3 quick questions to discover your perfect daily fragrance."
+        crumbs={[{ label: "Home", to: "/" }, { label: "Scent Finder" }]}
+      />
+      <section className="container-x py-12 md:py-14">
+        {!done ? (
+          <div className="mx-auto max-w-3xl rounded-2xl border bg-card p-5 sm:p-8">
+            <p className="text-xs uppercase tracking-[0.25em] text-secondary">
+              Step {step + 1} of {qs.length}
+            </p>
+            <h2 className="mt-2 break-words font-serif text-2xl md:text-3xl">{qs[step].q}</h2>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              {qs[step].opts.map((o) => (
+                <button
+                  key={o}
+                  onClick={() => {
+                    setAns([...ans, o]);
+                    setStep(step + 1);
+                  }}
+                  className="rounded-xl border p-4 text-left transition-colors hover:border-secondary hover:bg-muted"
+                >
+                  {o}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div>
+            <h2 className="break-words font-serif text-3xl">Your perfect picks</h2>
+            <p className="text-muted-foreground mt-2">Hand-selected based on your preferences.</p>
+            <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {recs.map((p) => (
+                <ProductCard key={p.id} p={p} />
+              ))}
+            </div>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <button
+                onClick={() => {
+                  setAns([]);
+                  setStep(0);
+                }}
+                className="rounded-full btn-outline-dark px-6 py-3 text-sm"
+              >
+                Retake
+              </button>
+              <Link to="/shop" className="rounded-full btn-saffron px-6 py-3 text-center text-sm">
+                Browse All
+              </Link>
+            </div>
+          </div>
+        )}
+      </section>
+    </>
+  );
+}
