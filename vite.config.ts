@@ -13,12 +13,12 @@ export default defineConfig(({ command, mode }) => {
     server: {
       host: true, 
       port,
-      allowedHosts: ["*"]
+      allowedHosts: true,
     },
     preview: { 
       host: true, 
       port,
-      allowedHosts: ["*"]
+      allowedHosts: true,
     },
     plugins: [
       tailwindcss(),
